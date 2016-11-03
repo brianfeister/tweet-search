@@ -2,11 +2,13 @@
 
 var Twitter = require('twitter');
 
+var credentials = require('./credentials.json');
+
 var client = new Twitter({
-  consumer_key: '',
-  consumer_secret: '',
-  access_token_key: '',
-  access_token_secret: ''
+  consumer_key: credentials.consumer_key,
+  consumer_secret: credentials.consumer_secret,
+  access_token_key: credentials.access_token_key,
+  access_token_secret: credentials.access_token_secret
 });
 
 var tweetTotal = 0;
@@ -30,7 +32,7 @@ client.get('search/tweets', {count: 99, q: q}, function(error, tweets, response)
     tweets.statuses.forEach( (tweet) => {
         tweetTotal += tweet.retweet_count;
     });
-    getTweetChunk(tweets.statuses[tweets.statuses.length - 1].id);
+    getTweetChunk(tweets.statuses[tweets.statuses.length - 1].id)
     .then( (tweets) => {
         if ( tweets < 99) {
             return getTweetChunk(tweets.statuses[tweets.statuses.length - 1].id);
